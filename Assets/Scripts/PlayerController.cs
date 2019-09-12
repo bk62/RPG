@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent (typeof (PlayerMotor))]
 public class PlayerController : MonoBehaviour {
@@ -16,6 +17,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update () {
+        if (EventSystem.current.IsPointerOverGameObject()) {
+            // ignore UI clicks
+            return;
+        }
+
         if (Input.GetMouseButtonDown (0)) {
             Ray ray = cam.ScreenPointToRay (Input.mousePosition);
             RaycastHit hit;
