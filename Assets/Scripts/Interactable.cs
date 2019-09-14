@@ -17,7 +17,7 @@ public class Interactable : MonoBehaviour {
 
     public virtual void Interact () {
         // Override!
-        Debug.Log("Interacting with " + transform.name);
+        // Debug.Log("Interacting with " + transform.name);
     }
 
     void Update () {

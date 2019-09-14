@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(CharacterCombat))]
 public class EnemyController : MonoBehaviour {
     public float lookRadius = 10f;
 
     Transform target;
     NavMeshAgent agent;
+    CharacterCombat combat;
 
     private void Start () {
         target = PlayerManager.instance.player.transform;
         agent = GetComponent<NavMeshAgent> ();
+        combat = GetComponent<CharacterCombat> ();
     }
 
     private void Update () {
@@ -21,17 +24,22 @@ public class EnemyController : MonoBehaviour {
             agent.SetDestination (target.position);
 
             if (distance <= agent.stoppingDistance) {
-                // attack the target
                 // face the target
                 FaceTarget ();
+
+                // attack the target
+                CharacterStats targetStats = target.GetComponent<CharacterStats> ();
+                if (targetStats != null) {
+                    combat.Attack (targetStats);
+                }
             }
         }
     }
 
-    void FaceTarget() {
+    void FaceTarget () {
         Vector3 direction = (target.position - transform.position);
-        Quaternion lookRotation  = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        Quaternion lookRotation = Quaternion.LookRotation (new Vector3 (direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp (transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
     void OnDrawGizmosSelected () {
