@@ -26,16 +26,16 @@ public class EquipmentManager : MonoBehaviour {
         currentEquipment = new Equipment[numSlots];
     }
 
-    public void Equip (Equipment newItem) {
-        int slotIndex = (int) newItem.equipSlot;
-
-        Equipment oldItem = null;
-
-        if (currentEquipment[slotIndex] != null) {
-            // something already in slot
-            oldItem = currentEquipment[slotIndex];
-            inventory.Add (oldItem);
+    public void PlaceInSlot (int slotIndex, Equipment newItem) {
+        if (currentEquipment[slotIndex] == newItem) {
+            return;
         }
+
+        Equipment oldItem = currentEquipment[slotIndex];
+
+        // if something is in slot, put into inventory
+        if (oldItem != null)
+            inventory.Add (oldItem);
 
         currentEquipment[slotIndex] = newItem;
 
@@ -43,19 +43,14 @@ public class EquipmentManager : MonoBehaviour {
             onEquipmentChanged.Invoke (newItem, oldItem);
     }
 
+    public void Equip (Equipment newItem) {
+        int slotIndex = (int) newItem.equipSlot;
+
+        PlaceInSlot (slotIndex, newItem);
+    }
+
     public void Unequip (int slotIndex) {
-        if (currentEquipment[slotIndex] == null) {
-            return;
-        }
-
-        // something in slot
-        Equipment oldItem = currentEquipment[slotIndex];
-        inventory.Add (oldItem);
-
-        currentEquipment[slotIndex] = null;
-
-         if (onEquipmentChanged != null)
-            onEquipmentChanged.Invoke (null, oldItem);
+        PlaceInSlot (slotIndex, null);
     }
 
     public void UnequipAll () {
