@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2317acf37a3f031519a3ed3d9dbbcf2b, type: 3}
-  m_Name: Sword of Destiny
+  m_Name: Platelegs
   m_EditorClassIdentifier: 
-  name: Sword of Destiny
-  icon: {fileID: 21300000, guid: d60846a020cbc62b9b492c2856e3e8cd, type: 3}
+  name: Platelegs
+  icon: {fileID: 21300000, guid: d06a525afe0fa22ec80b6a270dd9b782, type: 3}
   isDefaultItem: 0
-  equipSlot: 3
+  equipSlot: 2
+  mesh: {fileID: 8848836162968830295, guid: 598337eb0a88f34d893938f5d71ef092, type: 3}
+  coveredMeshRegions: 00000000
   armorModifier: 0
   damageModifier: 3
