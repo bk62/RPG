@@ -8,21 +8,22 @@ public class CharacterAnimator : MonoBehaviour {
     public AnimationClip[] defaultAttackAnimSet;
     protected AnimationClip[] currentAttackAnimSet;
 
-
     // takes .1s to transition betn animations
     const float locomotionAnimSmoothTime = 0.1f;
     NavMeshAgent agent;
     protected Animator animator;
     protected CharacterCombat combat;
-    protected AnimatorOverrideController overrideController;
+    public AnimatorOverrideController overrideController;
 
     protected virtual void Start () {
         agent = GetComponent<NavMeshAgent> ();
         animator = GetComponentInChildren<Animator> ();
-        combat = GetComponent<CharacterCombat>();
+        combat = GetComponent<CharacterCombat> ();
 
-        // allows swapping animator clips
-        overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        if (overrideController == null) {
+            // allows swapping animator clips
+            overrideController = new AnimatorOverrideController (animator.runtimeAnimatorController);
+        }
         animator.runtimeAnimatorController = overrideController;
 
         currentAttackAnimSet = defaultAttackAnimSet;
@@ -32,14 +33,14 @@ public class CharacterAnimator : MonoBehaviour {
     protected virtual void Update () {
         // current speed / max speed is betn 0..1
         float speedPercent = agent.velocity.magnitude / agent.speed;
-        animator.SetFloat("speedPercent", speedPercent, locomotionAnimSmoothTime, Time.deltaTime);
+        animator.SetFloat ("speedPercent", speedPercent, locomotionAnimSmoothTime, Time.deltaTime);
 
-        animator.SetBool("inCombat", combat.InCombat);
+        animator.SetBool ("inCombat", combat.InCombat);
     }
 
-    protected virtual void OnAttack() {
-        animator.SetTrigger("attack");
-        int attackIx = Random.Range(0, currentAttackAnimSet.Length);
+    protected virtual void OnAttack () {
+        animator.SetTrigger ("attack");
+        int attackIx = Random.Range (0, currentAttackAnimSet.Length);
         overrideController[replaceableAttackAnim.name] = currentAttackAnimSet[attackIx];
     }
 }
